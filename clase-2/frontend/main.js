@@ -11,17 +11,26 @@ const Order = require('./datalayer-definitions/order')
 const orderCollection = new Order.Collection()
 datalayer.registry('orders', orderCollection)
 
-const xhr = productCollection.fetch()
+const productXhr = productCollection.fetch()
 
-xhr.then(function(){
+productXhr.then(function(){
 	console.log('Product collection loaded')
 })
 
-xhr.catch(function(err){
+productXhr.catch(function(err){
 	console.log('Product collection coundn\'t load', err)
 })
 
 // Add order fetch here
+const orderXhr = orderCollection.fetch()
+
+orderXhr.then(function(){
+	console.log('Orders collection loaded')
+})
+
+orderXhr.catch(function(err){
+	console.log('Orders collection coundn\'t load', err)
+})
 
 const ProductList = require('./views/product-list')
 const productList = new ProductList(productCollection)

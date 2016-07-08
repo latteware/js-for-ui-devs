@@ -1,5 +1,5 @@
 const Backbone = require('backbone')
-const datalayer = require('datalayer')
+const datalayer = require('../lib/datalayer')
 
 const ProductList = Backbone.View.extend({
 	events: {
@@ -33,7 +33,22 @@ const ProductList = Backbone.View.extend({
 		const $row = $(e.currentTarget).closest('.row')
 		const model = this.productCollection.findWhere({uuid: $row.data('uuid')})
 
-		debugger;
+		const quantity = $row.find('input').val()
+		const order = {
+			products: [
+				{
+					quantity: quantity,
+					product: model.id
+				}
+			]
+		}
+
+		console.log(order)
+		const orders = datalayer.get('orders')
+
+		const newOrderModel = orders.add(order)
+		newOrderModel.save()
+
 		// order = {products:[{quantity:Number, product:UUID}]}
 	},
 	render: function(){

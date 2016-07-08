@@ -53,23 +53,32 @@
 	const productCollection = new Product.Collection()
 	datalayer.registry('products', productCollection)
 	
-	const Order = __webpack_require__(7)
+	const Order = __webpack_require__(6)
 	const orderCollection = new Order.Collection()
 	datalayer.registry('orders', orderCollection)
 	
-	const xhr = productCollection.fetch()
+	const productXhr = productCollection.fetch()
 	
-	xhr.then(function(){
+	productXhr.then(function(){
 		console.log('Product collection loaded')
 	})
 	
-	xhr.catch(function(err){
+	productXhr.catch(function(err){
 		console.log('Product collection coundn\'t load', err)
 	})
 	
 	// Add order fetch here
+	const orderXhr = orderCollection.fetch()
 	
-	const ProductList = __webpack_require__(6)
+	orderXhr.then(function(){
+		console.log('Orders collection loaded')
+	})
+	
+	orderXhr.catch(function(err){
+		console.log('Orders collection coundn\'t load', err)
+	})
+	
+	const ProductList = __webpack_require__(7)
 	const productList = new ProductList(productCollection)
 	
 	$('.product-list').append(productList.$el)
@@ -13655,7 +13664,28 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	const Backbone = __webpack_require__(4)
-	const datalayer = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"datalayer\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+	
+	const Model = Backbone.Model.extend({
+		urlRoot : '/orders',
+		idAttribute: 'uuid'
+	})
+	
+	const Collection = Backbone.Collection.extend({
+		model: Model,
+		url: '/orders'
+	})
+	
+	module.exports = {
+		Model,
+		Collection
+	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	const Backbone = __webpack_require__(4)
+	const datalayer = __webpack_require__(2)
 	
 	const ProductList = Backbone.View.extend({
 		events: {
@@ -13689,7 +13719,22 @@
 			const $row = $(e.currentTarget).closest('.row')
 			const model = this.productCollection.findWhere({uuid: $row.data('uuid')})
 	
-			debugger;
+			const quantity = $row.find('input').val()
+			const order = {
+				products: [
+					{
+						quantity: quantity,
+						product: model.id
+					}
+				]
+			}
+	
+			console.log(order)
+			const orders = datalayer.get('orders')
+	
+			const newOrderModel = orders.add(order)
+			newOrderModel.save()
+	
 			// order = {products:[{quantity:Number, product:UUID}]}
 		},
 		render: function(){
@@ -13741,27 +13786,6 @@
 	})
 	
 	module.exports = ProductList
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	const Backbone = __webpack_require__(4)
-	
-	const Model = Backbone.Model.extend({
-		urlRoot : '/orders',
-		idAttribute: 'uuid'
-	})
-	
-	const Collection = Backbone.Collection.extend({
-		model: Model,
-		url: '/orders'
-	})
-	
-	module.exports = {
-		Model,
-		Collection
-	}
 
 /***/ }
 /******/ ]);
