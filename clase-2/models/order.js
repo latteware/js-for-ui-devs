@@ -5,7 +5,9 @@ const v4 = require('node-uuid').v4
 const orderSchema = new Schema({
 	products:[{
 		quantity: Number,
-		product: { type: Schema.Types.ObjectId, ref: 'Product' }
+		product: { type: Schema.Types.ObjectId, ref: 'Product' },
+		name: String,
+		description: String
 	}],
 	uuid: { type: String, default: v4 }
 })

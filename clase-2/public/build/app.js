@@ -13724,12 +13724,13 @@
 				products: [
 					{
 						quantity: quantity,
-						product: model.id
+						product: model.id,
+						name: model.get('name'),
+						description: model.get('description')
 					}
 				]
 			}
 	
-			console.log(order)
 			const orders = datalayer.get('orders')
 	
 			const newOrderModel = orders.add(order)

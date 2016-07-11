@@ -114,7 +114,9 @@ app.post('/orders', function(req, res){
 
 			return {
 				quantity: data.quantity,
-				product: product._id
+				product: product._id,
+				name: product.name,
+				description: product.description
 			}
 		})
 
