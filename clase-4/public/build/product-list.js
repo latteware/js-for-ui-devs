@@ -26588,7 +26588,7 @@
 			var self = this
 	
 			this.$el.html(`
-				<form class="form-horizontal">
+				<form class="form-horizontal" onSubmit={}>
 					<div class="form-group">
 						<label for="product-name" class="col-sm-2 control-label">Product Name</label>
 						<div class="col-sm-10">
@@ -26633,24 +26633,129 @@
 	})
 	*/
 	
-	var ListItem = function (_React$Component) {
-		_inherits(ListItem, _React$Component);
+	var ProductForm = function (_React$Component) {
+		_inherits(ProductForm, _React$Component);
+	
+		function ProductForm(props) {
+			_classCallCheck(this, ProductForm);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ProductForm).call(this, props));
+	
+			_this.state = {};
+			return _this;
+		}
+	
+		_createClass(ProductForm, [{
+			key: 'nameChange',
+			value: function nameChange(event) {
+				this.setState({ name: event.target.value });
+			}
+		}, {
+			key: 'descriptionChange',
+			value: function descriptionChange(event) {
+				this.setState({ description: event.target.value });
+			}
+		}, {
+			key: 'handleSubmit',
+			value: function handleSubmit(e) {
+				e.preventDefault();
+				var name = this.state.name.trim();
+				var description = this.state.description.trim();
+				if (!name || !name) {
+					return;
+				}
+	
+				var model = this.props.collection.add({
+					name: name,
+					description: description
+				});
+				model.save();
+	
+				this.setState({ name: '', description: '' });
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {}
+		}, {
+			key: 'render',
+			value: function render() {
+				return React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'div',
+						null,
+						React.createElement(
+							'form',
+							{ className: 'form-horizontal', onSubmit: this.handleSubmit.bind(this) },
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									{ className: 'col-sm-2 control-label' },
+									'Product Name'
+								),
+								React.createElement(
+									'div',
+									{ className: 'col-sm-10' },
+									React.createElement('input', { type: 'text', className: 'form-control product-name', id: 'product-name', placeholder: 'Product name', value: this.state.name, onChange: this.nameChange.bind(this) })
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'label',
+									{ className: 'col-sm-2 control-label' },
+									'Description'
+								),
+								React.createElement(
+									'div',
+									{ className: 'col-sm-10' },
+									React.createElement('textarea', { className: 'form-control description', id: 'description', placeholder: 'Description for product', value: this.state.description, onChange: this.descriptionChange.bind(this) })
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'form-group' },
+								React.createElement(
+									'div',
+									{ className: 'col-sm-offset-2 col-sm-10' },
+									React.createElement(
+										'button',
+										{ type: 'submit', className: 'btn btn-primary btn-block' },
+										'Crear'
+									)
+								)
+							)
+						)
+					)
+				);
+			}
+		}]);
+	
+		return ProductForm;
+	}(React.Component);
+	
+	var ListItem = function (_React$Component2) {
+		_inherits(ListItem, _React$Component2);
 	
 		function ListItem(props) {
 			_classCallCheck(this, ListItem);
 	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ListItem).call(this, props));
+			var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(ListItem).call(this, props));
 	
-			var self = _this;
+			var self = _this2;
 	
-			_this.state = {};
+			_this2.state = {};
 	
-			_this.model = props.model;
+			_this2.model = props.model;
 	
-			_this.binder = function () {
+			_this2.binder = function () {
 				self.setState(self.model.toJSON());
 			};
-			return _this;
+			return _this2;
 		}
 	
 		_createClass(ListItem, [{
@@ -26670,7 +26775,16 @@
 				return React.createElement(
 					'div',
 					null,
-					this.state.name
+					React.createElement(
+						'h4',
+						null,
+						this.state.name
+					),
+					React.createElement(
+						'p',
+						null,
+						this.state.description
+					)
 				);
 			}
 		}]);
@@ -26678,46 +26792,38 @@
 		return ListItem;
 	}(React.Component);
 	
-	var ProductList = function (_React$Component2) {
-		_inherits(ProductList, _React$Component2);
+	var ProductList = function (_React$Component3) {
+		_inherits(ProductList, _React$Component3);
 	
 		function ProductList(props) {
 			_classCallCheck(this, ProductList);
 	
-			var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(ProductList).call(this, props));
+			var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ProductList).call(this, props));
 	
-			var self = _this2;
+			var self = _this3;
 	
-			_this2.collection = props.collection;
-			_this2.state = {};
-			_this2.state.items = [];
+			_this3.collection = props.collection;
+			_this3.state = {};
+			_this3.state.items = [];
 	
-			_this2.binder = function () {
+			_this3.binder = function () {
 				self.setState({ items: self.collection.toArray() });
 			};
-			return _this2;
+			return _this3;
 		}
 	
 		_createClass(ProductList, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				var _this3 = this;
-	
 				this.binder();
 				this.collection.on('add', this.binder);
-				this.collection.on('remove', function () {
-					_this3.collectionToState();
-				});
+				this.collection.on('remove', this.binder);
 			}
 		}, {
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
-				var _this4 = this;
-	
 				this.collection.off('add', this.binder);
-				this.collection.off('remove', function () {
-					_this4.collectionToState();
-				});
+				this.collection.off('remove', this.binder);
 			}
 		}, {
 			key: 'render',
@@ -26737,12 +26843,13 @@
 	
 				return React.createElement(
 					'div',
-					null,
+					{ className: 'product-list' },
 					React.createElement(
 						'h2',
 						null,
-						'Product list'
+						this.props.title
 					),
+					React.createElement(ProductForm, { collection: this.collection }),
 					items
 				);
 			}

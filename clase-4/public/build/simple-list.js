@@ -49,11 +49,12 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(33);
 	
-	var collection = [{ title: 'First' }, { title: 'Second' }, { title: 'Third' }];
+	var collection = [{ title: 'First', description: 'This is the first item' }, { title: 'Second', description: 'This is the second item' }, { title: 'Third', description: 'This is the third item' }];
 	
-	var List = __webpack_require__(179);
+	// const List = require('./views/list.jsx')
+	var ListItem = __webpack_require__(179).ListItem;
 	
-	ReactDOM.render(React.createElement(List, { collection: collection }), document.getElementById('content'));
+	ReactDOM.render(React.createElement(ListItem, { model: collection[0] }), document.getElementById('content'));
 
 /***/ },
 /* 1 */
@@ -21329,7 +21330,16 @@
 				return React.createElement(
 					'div',
 					null,
-					this.state.model.title
+					React.createElement(
+						'h4',
+						null,
+						this.state.model.title
+					),
+					React.createElement(
+						'p',
+						null,
+						this.state.model.description
+					)
 				);
 			}
 		}]);
@@ -21374,6 +21384,8 @@
 	
 		return List;
 	}(React.Component);
+	
+	List.ListItem = ListItem;
 	
 	module.exports = List;
 

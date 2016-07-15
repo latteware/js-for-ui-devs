@@ -13,7 +13,10 @@ class ListItem extends React.Component {
 	}
 
 	render() {
-		return <div>{this.state.model.title}</div>
+		return <div>
+			<h4>{this.state.model.title}</h4>
+			<p>{this.state.model.description}</p>
+		</div>
 	}
 }
 
@@ -38,5 +41,7 @@ class List extends React.Component {
 		</div>
 	}
 }
+
+List.ListItem = ListItem
 
 module.exports = List

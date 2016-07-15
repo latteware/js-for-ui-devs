@@ -59,7 +59,7 @@ const ProductList = Backbone.View.extend({
 		var self = this
 
 		this.$el.html(`
-			<form class="form-horizontal">
+			<form class="form-horizontal" onSubmit={}>
 				<div class="form-group">
 					<label for="product-name" class="col-sm-2 control-label">Product Name</label>
 					<div class="col-sm-10">
@@ -104,6 +104,69 @@ const ProductList = Backbone.View.extend({
 })
 */
 
+class ProductForm extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {}
+	}
+
+	nameChange (event){
+		this.setState({name: event.target.value});
+	}
+
+	descriptionChange (event){
+		this.setState({description: event.target.value});
+	}
+
+	handleSubmit (e) {
+		e.preventDefault();
+		var name = this.state.name.trim();
+		var description = this.state.description.trim();
+		if (!name || !name) {
+			return;
+		}
+		
+		const model = this.props.collection.add({
+			name: name,
+			description: description
+		})
+		model.save()
+
+		this.setState({name: '', description: ''});
+	}
+
+	componentDidMount (){
+
+	}
+
+	render () {
+		return <div>
+			<div>
+				<form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+					<div className="form-group">
+						<label className="col-sm-2 control-label">Product Name</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control product-name" id="product-name" placeholder="Product name" value={this.state.name} onChange={this.nameChange.bind(this)}/>
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="col-sm-2 control-label">Description</label>
+						<div className="col-sm-10">
+							<textarea className="form-control description" id="description" placeholder="Description for product" value={this.state.description} onChange={this.descriptionChange.bind(this)}></textarea>
+						</div>
+					</div>
+					<div className="form-group">
+						<div className="col-sm-offset-2 col-sm-10">
+							<button type="submit" className="btn btn-primary btn-block">Crear</button>
+						</div>
+					</div>
+				</form>				
+			</div>
+		</div>
+	}
+}
+
 class ListItem extends React.Component {
 	constructor(props) {
 		super(props)
@@ -128,7 +191,10 @@ class ListItem extends React.Component {
 	}	
 
 	render() {
-		return <div>{this.state.name}</div>
+		return <div>
+			<h4>{this.state.name}</h4>
+			<p>{this.state.description}</p>
+		</div>
 	}
 }
 
@@ -149,12 +215,12 @@ class ProductList extends React.Component {
 	componentDidMount(){
 		this.binder()
 		this.collection.on('add', this.binder)
-		this.collection.on('remove', () => { this.collectionToState() })
+		this.collection.on('remove', this.binder)
 	}
 
 	componentWillUnmount(){
 		this.collection.off('add', this.binder)
-		this.collection.off('remove', () => { this.collectionToState() })
+		this.collection.off('remove', this.binder)
 	}
 
 	render() {
@@ -167,8 +233,9 @@ class ProductList extends React.Component {
 			})
 		}
 
-		return <div>
-			<h2>Product list</h2>
+		return <div className="product-list">
+			<h2>{this.props.title}</h2>
+			<ProductForm collection={this.collection}/>
 			{items}
 		</div>
 	}
