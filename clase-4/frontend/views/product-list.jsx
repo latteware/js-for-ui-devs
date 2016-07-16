@@ -188,12 +188,17 @@ class ListItem extends React.Component {
 
 	componentWillUnmount(){
 		this.model.off('change', this.binder)
-	}	
+	}
+
+	clickHandler(){
+		console.log('Hi')
+	}
 
 	render() {
 		return <div>
 			<h4>{this.state.name}</h4>
 			<p>{this.state.description}</p>
+			<button onClick={this.clickHandler.bind(this)}>Click me</button>
 		</div>
 	}
 }

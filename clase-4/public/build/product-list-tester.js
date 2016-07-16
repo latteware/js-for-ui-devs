@@ -26773,6 +26773,11 @@
 				this.model.off('change', this.binder);
 			}
 		}, {
+			key: 'clickHandler',
+			value: function clickHandler() {
+				debugger;
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				return React.createElement(
@@ -26787,6 +26792,11 @@
 						'p',
 						null,
 						this.state.description
+					),
+					React.createElement(
+						'button',
+						{ onClick: this.clickHandler.bind(this) },
+						'Click me'
 					)
 				);
 			}
