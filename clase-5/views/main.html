@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+<link href="/assets/vendors/jquery/jquery-ui.css" rel="stylesheet">
+<style>
+.ui-slider{
+	margin-top: 11px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12">
+	<h1>UI library</h1>
+	<div id="content"></div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/assets/vendors/jquery/jquery.js"></script>
+<script type="text/javascript" src="/assets/vendors/jquery/jquery-ui.js"></script>
+<script type="text/javascript" src="/assets/build/app.js"></script>
+{% endblock %}
