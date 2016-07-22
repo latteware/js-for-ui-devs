@@ -79,6 +79,12 @@
 	
 	var ProductDescriptionPage = React.createClass({
 		displayName: 'ProductDescriptionPage',
+		componentWillMount: function componentWillMount() {
+			console.log('Hi');
+		},
+		componentWillUnmount: function componentWillUnmount() {
+			console.log('Bye');
+		},
 		render: function render() {
 			var uuid = this.props.routeParams.uuid;
 			var model = productCollection.findWhere({ uuid: uuid });
@@ -113,11 +119,65 @@
 		}
 	});
 	
+	var ProductLayout = React.createClass({
+		displayName: 'ProductLayout',
+		render: function render() {
+			var content;
+			if (this.props.children) {
+				content = this.props.children;
+			} else {
+				content = React.createElement(ProductsPage, null);
+			}
+	
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					'Header'
+				),
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					React.createElement(
+						'div',
+						{ className: 'col-xs-12 col-sm-8' },
+						React.createElement(
+							'h3',
+							null,
+							'Bienvenido a la tienda'
+						),
+						React.createElement(
+							'div',
+							null,
+							content
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'col-xs-12 col-sm-4' },
+						'Sidebar'
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					'Footer'
+				)
+			);
+		}
+	});
+	
 	var router = React.createElement(
 		Router,
 		{ history: ReactRouter.browserHistory },
-		React.createElement(Route, { path: '/', component: ProductsPage }),
-		React.createElement(Route, { path: '/product/:uuid', component: ProductDescriptionPage }),
+		React.createElement(
+			Route,
+			{ path: '/', component: ProductLayout },
+			React.createElement(Route, { path: '', component: ProductsPage }),
+			React.createElement(Route, { path: '/product/:uuid', component: ProductDescriptionPage })
+		),
 		React.createElement(Route, { path: '*', component: NotFound })
 	);
 	

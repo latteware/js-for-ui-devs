@@ -25,6 +25,12 @@ const ProductsPage = React.createClass({
 })
 
 const ProductDescriptionPage = React.createClass({
+	componentWillMount() {
+	    console.log('Hi')
+	},
+	componentWillUnmount() {
+	    console.log('Bye')
+	},
 	render(){
 		const uuid = this.props.routeParams.uuid
 		const model = productCollection.findWhere({uuid:uuid})
@@ -50,9 +56,36 @@ const NotFound = React.createClass({
 	}
 })
 
+const ProductLayout = React.createClass({
+	render() {
+		var content
+		if(this.props.children){
+			content = this.props.children
+		}else{
+			content = <ProductsPage/>
+		}
+
+		return <div>
+			<div className="row">Header</div>
+			<div className="row">			
+				<div className="col-xs-12 col-sm-8">
+					<h3>Bienvenido a la tienda</h3>
+					<div>{content}</div>
+				</div>
+				<div className="col-xs-12 col-sm-4">
+					Sidebar
+				</div>
+			</div>
+			<div className="row">Footer</div>
+		</div>
+	}
+})
+
 const router = (<Router history={ReactRouter.browserHistory}>
-	<Route path="/" component={ProductsPage}></Route>
-	<Route path="/product/:uuid" component={ProductDescriptionPage}></Route>
+	<Route path="/" component={ProductLayout}>
+		<Route path="" component={ProductsPage}></Route>
+		<Route path="/product/:uuid" component={ProductDescriptionPage}></Route>
+	</Route>
 	<Route path="*" component={NotFound}></Route>
 </Router>)
 
