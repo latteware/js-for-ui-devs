@@ -15,6 +15,7 @@ const Slider = React.createClass({
 			change: function(){
 				const value = $(this).slider('value')
 				self.setState({value: value })
+				self.props.changeHandler(self.props.name, value)
 			}
 		})
 	},
@@ -25,6 +26,7 @@ const Slider = React.createClass({
 		if( $(this.refs.slider).slider('value') !== nextState.value ){
 			$(this.refs.slider).slider('value', nextState.value)
 		}
+
 	},
 	handleChange: function(event) {
 		this.setState({value: event.target.value})
@@ -46,5 +48,7 @@ const Slider = React.createClass({
 		</div>
 	}
 })
+
+Slider.handler = function(){}
 
 module.exports = Slider

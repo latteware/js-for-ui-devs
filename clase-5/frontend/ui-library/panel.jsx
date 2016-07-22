@@ -6,6 +6,8 @@ const Panel = React.createClass({
 		title: React.PropTypes.string.isRequired
 	},
 	render: function() {
+		console.log(this.props.children)
+
 		return <div className="panel panel-default">
 			<div className="panel-heading">
 				<h3 className="panel-title">{ this.props.title }</h3>

@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+<style>
+h2{
+	margin-top: 0
+}
+
+.product-list{
+    border: 1px solid black;
+    margin-bottom: 20px;
+    padding: 7px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-8">
+	<div id="product-list-empty"></div>
+	<div id="product-list-with-data"></div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/assets/build/product-list-tester.js"></script>
+{% endblock %}

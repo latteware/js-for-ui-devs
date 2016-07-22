@@ -3,7 +3,8 @@ const ReactDOM = require('react-dom')
 
 const Panel = require('./ui-library/panel.jsx');
 const TextInput = require('./ui-library/text-input.jsx');
-const SliderInput = require('./ui-library/slider-input.jsx');
+const SliderGroup = require('./ui-library/slider-input.jsx');
+const sliderGroupHandler = SliderGroup.hander
 const Button = require('./ui-library/send-button.jsx');
 
 const Form = React.createClass({
@@ -14,6 +15,12 @@ const Form = React.createClass({
 		console.log('Name Changed', name, value)
 
 		this.setState({username:value})
+	},
+	genericChangeHandler: function(name, value){
+		const obj = {}
+		obj[name] = value
+
+		this.setState(obj)
 	},
 	handleSubmit: function(e){
 		e.preventDefault()
@@ -34,9 +41,15 @@ const Form = React.createClass({
 			
 			<pre>{ data }</pre>
 
-			<form className="form-horizontal" onSubmit={this.handleSubmit}>
-				<TextInput label="Username" changeHandler={this.nameHandler} name="username"/>
-			</form>
+			<Panel>
+				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+					<TextInput label="Username" changeHandler={this.genericChangeHandler} name="username"/>
+					<TextInput label="Address" changeHandler={this.genericChangeHandler} name="address"/>
+					<SliderInput label="Age" changeHandler={this.genericChangeHandler} name="age"/>
+
+					{ validButton }
+				</form>
+			</Panel>
 		</div>
 	}
 })

@@ -1,7 +1,8 @@
 module.exports = {
 	entry: {
+		"simple-router": './frontend/simple-router.jsx',
 		"app": './frontend/main.jsx',
-		"app-final": './frontend/main-final.jsx',
+		"tester": './frontend/tester.jsx'
 	},
 	output: {
 		filename: '[name].js',
@@ -14,6 +15,7 @@ module.exports = {
 			{
 				test: /\.jsx?$/,
 				loader: 'babel',
+				exclude: /node_modules/,
 				query: {
 					presets:['es2015', 'react']
 				}
@@ -21,16 +23,11 @@ module.exports = {
 			{
 				test: /\.js?$/,
 				loader: 'babel',
+				exclude: /node_modules/,
 				query: {
 					presets:['es2015']
 				}
 			}			
 		]
-	}
-	,resolve: {
-		alias: {
-			'react': 'react-lite',
-			'react-dom': 'react-lite'
-		}
 	}
 }
