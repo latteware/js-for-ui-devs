@@ -8,14 +8,12 @@ import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 
 // Creamos un componente
-let Counter = ({value, dispatch}) => {
+let Counter = ({value, increment}) => {
 	console.log('Rendering state', arguments)
 
 	return (<div>
 		<h1 onClick={e =>
-			dispatch({
-				type: 'INCREMENT'
-			})
+			increment()
 		}>{value}</h1>
 	</div>)
 }
@@ -54,7 +52,7 @@ function mapDispatchToProps(dispatch) {
 		}
 	}
 }
-Counter = connect(mapStateToProps)(Counter)
+Counter = connect(mapStateToProps, mapDispatchToProps)(Counter)
 
 
 // Rendereamos

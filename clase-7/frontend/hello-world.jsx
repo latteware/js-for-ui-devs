@@ -5,7 +5,7 @@ import { createStore } from 'redux'
 
 // Creamos un componente
 let Counter = ({ value }) => {
-	console.log('Rendering state', value)
+	// console.log('Rendering state', value)
 
 	return (<div>
 		<h1>{value}</h1>
@@ -14,9 +14,11 @@ let Counter = ({ value }) => {
 
 // Reducer
 function increment(state = 0, action) {
-	console.log(state, action)
+	// console.log(state, action)
 	if(action.type === 'INCREMENT'){
-		return state + 1
+		return state + (action.i || 1)
+	}else if(action.type === 'DECREMENT'){
+		return state - (action.i || 1)
 	}else{
 		return state
 	}
@@ -34,7 +36,13 @@ Counter = connect(mapStateToProps)(Counter)
 
 
 // Hacemos una accion recurrent
-setInterval(()=> store.dispatch({type:'INCREMENT'}), 1000)
+setInterval(()=>{
+	if(Math.random() > .5){
+		store.dispatch({type:'INCREMENT', i: 2})
+	}else{
+		store.dispatch({type:'DECREMENT'})
+	}
+}, 1000)
 
 
 // Rendereamos
@@ -44,3 +52,5 @@ render(
 	</Provider>,
 	document.getElementById('root')
 )
+
+window.store = store

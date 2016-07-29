@@ -4,14 +4,12 @@ import { Provider, connect } from 'react-redux'
 import { createStore } from 'redux'
 
 // Creamos un componente
-let Counter = ({value, dispatch}) => {
+let Counter = ({value, increment}) => {
 	console.log('Rendering state', arguments)
 
 	return (<div>
 		<h1 onClick={e =>
-			dispatch({
-				type: 'INCREMENT'
-			})
+			increment()
 		}>{value}</h1>
 	</div>)
 }
@@ -46,7 +44,7 @@ function mapDispatchToProps(dispatch) {
 		}
 	}
 }
-Counter = connect(mapStateToProps)(Counter)
+Counter = connect(mapStateToProps, mapDispatchToProps)(Counter)
 
 
 // Rendereamos
